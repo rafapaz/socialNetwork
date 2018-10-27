@@ -32,3 +32,12 @@ def myLogin(request):
 def myLogout(request):
     logout(request)
     return render(request, 'main/login.html')
+
+def listUsers(request):
+    keyword = request.POST.get('keyword')
+    if keyword is None:
+        keyword = ''
+        
+    usersList = CustomUser.objects.filter(name__icontains=keyword)
+    context = {'usersList': usersList}
+    return render(request, 'main/listUsers.html', context)

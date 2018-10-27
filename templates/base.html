@@ -11,14 +11,22 @@
 <body>
     <div class="w3-bar w3-black">
         <div class="w3-bar-item" >Generic Social Network</div>
+       
         <a href="{% url 'index' %}" class="w3-bar-item w3-button"><i class="material-icons">home</i></a>
         <a href="#" class="w3-bar-item w3-button"><i class="material-icons">people</i></a>
-        <a href="#" class="w3-bar-item w3-button"><i class="material-icons">notifications</i></a>        
+        <a href="#" class="w3-bar-item w3-button"><i class="material-icons">notifications</i></a>
+        
+        <form  action="{% url 'listUsers' %}" method="POST">
+            {% csrf_token %}
+            <input class="w3-bar-item w3-input w3-border" type="text" name="keyword" placeholder="Search friends"><button class="w3-bar-item w3-button w3-green">Go</button>
+        </form>
         {% if user.is_authenticated %}
             <a href="{% url 'logout' %}" class="w3-bar-item w3-button w3-right">Log Out</a>
         {% else %}
             <a href="{% url 'index' %}" class="w3-bar-item w3-button w3-right">Log In</a>
         {% endif %}
+
+        <div class="w3-bar-item w3-right"><img  style="width:30px" class="w3-circle" src="{{ myUser.img_profile.url }}" /> {{ myUser.name }}</div>
     </div>
 
     <div id="content">
