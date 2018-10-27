@@ -22,3 +22,8 @@ class CustomUser(models.Model):
 
     def __str__(self):
         return self.name
+
+class FriendshipRequest(models.Model):
+    user_from = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='+')
+    user_to = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='+')
+    send_date = models.DateTimeField('send date')

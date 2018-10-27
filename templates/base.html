@@ -4,15 +4,21 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <title>{% block title %}My amazing site{% endblock %}</title>
 </head>
 
 <body>
     <div class="w3-bar w3-black">
-        <a href="#" class="w3-bar-item w3-button">Home</a>
-        <a href="#" class="w3-bar-item w3-button">Link 1</a>
-        <a href="#" class="w3-bar-item w3-button">Link 2</a>
-        <a href="#" class="w3-bar-item w3-button">Link 3</a>
+        <div class="w3-bar-item" >Generic Social Network</div>
+        <a href="{% url 'index' %}" class="w3-bar-item w3-button"><i class="material-icons">home</i></a>
+        <a href="#" class="w3-bar-item w3-button"><i class="material-icons">people</i></a>
+        <a href="#" class="w3-bar-item w3-button"><i class="material-icons">notifications</i></a>        
+        {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}" class="w3-bar-item w3-button w3-right">Log Out</a>
+        {% else %}
+            <a href="{% url 'index' %}" class="w3-bar-item w3-button w3-right">Log In</a>
+        {% endif %}
     </div>
 
     <div id="content">
