@@ -1,3 +1,6 @@
 {
-    "python.pythonPath": "C:\\Users\\rafap\\envs\\socialNetwork\\Scripts\\python.exe"
+    "python.pythonPath": "C:\\Users\\rafap\\envs\\socialNetwork\\Scripts\\python.exe",
+    "python.linting.pylintEnabled": false,
+    "python.linting.enabled": true,
+    "python.linting.flake8Enabled": true
 }

@@ -5,16 +5,6 @@ from django.contrib.auth import authenticate, login, logout
 import datetime
 
 
-def index(request):
-    if not request.user.is_authenticated:
-        return render(request, 'main/login.html')
-
-    myUser = CustomUser.objects.get(user=request.user)
-    myReqs = FriendshipRequest.objects.filter(user_to=myUser)
-        
-    context = {'myUser': myUser, 'otherUser': myUser, 'myReqs': myReqs}
-    return render(request, 'main/index.html', context)
-    
 def profile(request, user_id):
     if not request.user.is_authenticated:
         return render(request, 'main/login.html')
@@ -22,9 +12,10 @@ def profile(request, user_id):
     myUser = CustomUser.objects.get(user=request.user)
     otherUser = CustomUser.objects.get(pk=user_id)
     myReqs = FriendshipRequest.objects.filter(user_to=myUser)
-        
+
     context = {'myUser': myUser, 'otherUser': otherUser, 'myReqs': myReqs}
-    return render(request, 'main/index.html', context)
+    return render(request, 'main/profile.html', context)
+
 
 def myLogin(request):
     try:
@@ -37,14 +28,16 @@ def myLogin(request):
             raise Exception('Shit!')
 
         login(request, sysUser)
-        return redirect('index')        
+        return redirect('profile', user_id=myUser.id)        
     except:
         context = {'message': 'Email or password not valid'}
         return render(request, 'main/login.html', context)
-    
+
+
 def myLogout(request):
     logout(request)
     return render(request, 'main/login.html')
+
 
 def listUsers(request):
     if not request.user.is_authenticated:
@@ -57,7 +50,7 @@ def listUsers(request):
         request.session['keyword'] = keyword
 
     myUser = CustomUser.objects.get(user=request.user)    
-    
+
     usersList = CustomUser.objects.filter(name__icontains=request.session['keyword'])
     usersList = list(set(usersList) - set([myUser]))
 
@@ -67,9 +60,10 @@ def listUsers(request):
         usersReqList.append(f.user_to)
 
     myReqs = FriendshipRequest.objects.filter(user_to=myUser)
-    
-    context = {'usersList': usersList, 'myUser': myUser, 'usersReqList': usersReqList, 'myReqs':myReqs}
+
+    context = {'usersList': usersList, 'myUser': myUser, 'usersReqList': usersReqList, 'myReqs': myReqs}
     return render(request, 'main/listUsers.html', context)
+
 
 def requestFriend(request):
     if not request.user.is_authenticated:
@@ -83,8 +77,9 @@ def requestFriend(request):
 
     if request.POST.get('list') is not None:
         return redirect('listUsers')
-    
-    return redirect('index')
+
+    return redirect('profile')
+
 
 def listAccept(request):
     if not request.user.is_authenticated:
@@ -92,9 +87,10 @@ def listAccept(request):
 
     myUser = CustomUser.objects.get(user=request.user)
     myReqs = FriendshipRequest.objects.filter(user_to=myUser)
-        
+
     context = {'myUser': myUser, 'myReqs': myReqs}
     return render(request, 'main/listAccept.html', context)
+
 
 def acceptFriend(request):
     if not request.user.is_authenticated:
@@ -106,10 +102,10 @@ def acceptFriend(request):
     myUser.friends.add(fromUser)
     myUser.save()
 
-    reqs = FriendshipRequest.objects.filter(user_from=fromUser,user_to=myUser) | FriendshipRequest.objects.filter(user_from=myUser,user_to=fromUser)
+    reqs = FriendshipRequest.objects.filter(user_from=fromUser, user_to=myUser) | FriendshipRequest.objects.filter(user_from=myUser, user_to=fromUser)
     reqs.delete()
 
     if request.POST.get('list') is not None:
         return redirect('listAccept')
-    
-    return redirect('index')
+
+    return redirect('profile')
