@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}List of Users{% endblock %}
+
+{% block content %}
+    {% for req in myReqs %}
+        <div class="w3-display-container w3-panel w3-sand w3-mobile w3-center"  style="width:50%">
+            <span onclick="this.parentElement.style.display='none'"
+            class="w3-button w3-display-topright">X</span>
+            <form action="{% url 'acceptFriend' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" id="user_id" name="user_id" value="{{ req.user_from.id }}">
+                <input type="hidden" id="req_id" name="req_id" value="{{ req.id }}">
+                <input type="hidden" id="list" name="list" value="1">
+                <a class="w3-button w3-hover-none" href="{% url 'profile' u.id %}">
+                    <img  style="width:60px" class="w3-circle" src="{{ req.user_from.img_profile.url }}" /> {{ req.user_from.name }}
+                </a>
+                <button class="w3-button w3-round-xxlarge w3-green w3-mobile" type="submit">Accept friend</button>                
+            </form>   
+        </div>     
+    {% endfor %}
+{% endblock %}

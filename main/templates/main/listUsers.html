@@ -4,6 +4,24 @@
 
 {% block content %}
     {% for u in usersList %}
-        <li>{{ u.name }}</li>
+        <div class="w3-display-container  w3-panel w3-sand w3-mobile w3-center"  style="width:50%">
+            <span onclick="this.parentElement.style.display='none'"
+            class="w3-button w3-display-topright">X</span>
+            <form action="{% url 'requestFriend' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" id="id" name="id" value="{{u.id}}">
+                <input type="hidden" id="list" name="list" value="1">
+                <a class="w3-button w3-hover-none" href="{% url 'profile' u.id %}">
+                    <img  style="width:60px" class="w3-circle" src="{{ u.img_profile.url }}" /> {{ u.name }}
+                </a>
+                {% if u in usersReqList %}
+                    <div class="w3-button w3-round-xxlarge w3-gray w3-mobile w3-disabled">Request sent</div>
+                {% elif u in myUser.friends.all %}
+                    <div class="w3-button w3-round-xxlarge w3-gray w3-mobile w3-disabled">Your friend</div>
+                {% else %}
+                    <button class="w3-button w3-round-xxlarge w3-green w3-mobile" type="submit">Add Friend</button>
+                {% endif %}
+            </form>   
+        </div>     
     {% endfor %}
 {% endblock %}

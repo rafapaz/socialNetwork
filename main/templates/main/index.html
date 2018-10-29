@@ -3,6 +3,8 @@
 {% block title %}User Profile{% endblock %}
 
 {% block content %}
-Perfil do usuario: {{ myUser.name }}
-<img  style="width:100px" class="w3-circle" src="{{ myUser.img_profile.url }}" />
+
+<img  style="width:100px" class="w3-circle" src="{{ otherUser.img_profile.url }}" /> {{ otherUser.name }}
+
+
 {% endblock %}
