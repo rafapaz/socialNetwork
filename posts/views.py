@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from main.models import CustomUser, FriendshipRequest
 from posts.models import Post, Comment, LikePost, LikeComment
 import datetime
@@ -6,7 +6,7 @@ import datetime
 
 def index(request):
     if not request.user.is_authenticated:
-        return render(request, 'main/login.html')
+        return redirect('login')
 
     myUser = CustomUser.objects.get(user=request.user)
     myReqs = FriendshipRequest.objects.filter(user_to=myUser)
@@ -20,7 +20,7 @@ def index(request):
 
 def post(request):
     if not request.user.is_authenticated:
-        return render(request, 'main/login.html')
+        return redirect('login')
 
     myUser = CustomUser.objects.get(user=request.user)    
 
@@ -28,4 +28,21 @@ def post(request):
     myPost = Post(user=myUser, text=text, date_pub=datetime.datetime.now())
     myPost.save()
 
+    return redirect('post_index')
+
+
+def post_like(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    myUser = CustomUser.objects.get(user=request.user)
+    likes = LikePost.objects.filter(post=post, user=myUser)
+    if not likes:
+        like = LikePost()
+        like.like = True
+        like.post = post
+        like.user = myUser
+        like.save()
+    else:
+        like = likes[0]
+        like.delete()
+    
     return redirect('post_index')

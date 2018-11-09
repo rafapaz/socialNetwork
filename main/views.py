@@ -7,7 +7,7 @@ import datetime
 
 def profile(request, user_id):
     if not request.user.is_authenticated:
-        return render(request, 'main/login.html')
+        return redirect('login')
 
     myUser = CustomUser.objects.get(user=request.user)
     otherUser = CustomUser.objects.get(pk=user_id)
@@ -21,27 +21,28 @@ def myLogin(request):
     try:
         email = request.POST.get('email')
         psw = request.POST.get('psw')
+
+        if email is None and psw is None:
+            return render(request, 'main/login.html')
+
         myUser = CustomUser.objects.get(email=email)
         sysUser = authenticate(username=myUser.user.username, password=psw)
-
-        if sysUser is None:
-            raise Exception('Shit!')
-
         login(request, sysUser)
-        return redirect('profile', user_id=myUser.id)        
-    except:
+        return redirect('profile', user_id=myUser.id)  
+
+    except Exception:
         context = {'message': 'Email or password not valid'}
         return render(request, 'main/login.html', context)
 
 
 def myLogout(request):
     logout(request)
-    return render(request, 'main/login.html')
+    return redirect('login')
 
 
 def listUsers(request):
     if not request.user.is_authenticated:
-        return render(request, 'main/login.html')
+        return redirect('login')
 
     keyword = request.POST.get('keyword')
     if keyword is None:
@@ -67,7 +68,7 @@ def listUsers(request):
 
 def requestFriend(request):
     if not request.user.is_authenticated:
-        return render(request, 'main/login.html')
+        return redirect('login')
 
     myUser = CustomUser.objects.get(user=request.user)
     toUser = CustomUser.objects.get(pk=request.POST.get('id'))
@@ -83,7 +84,7 @@ def requestFriend(request):
 
 def listAccept(request):
     if not request.user.is_authenticated:
-        return render(request, 'main/login.html')
+        return redirect('login')
 
     myUser = CustomUser.objects.get(user=request.user)
     myReqs = FriendshipRequest.objects.filter(user_to=myUser)
@@ -94,7 +95,7 @@ def listAccept(request):
 
 def acceptFriend(request):
     if not request.user.is_authenticated:
-        return render(request, 'main/login.html')
+        return redirect('login')
 
     myUser = CustomUser.objects.get(user=request.user)
     fromUser = CustomUser.objects.get(pk=request.POST.get('user_id'))
