@@ -13,16 +13,16 @@
 </div>
 <br>
 {% for p in postsAll %}
-    {{ p.user.name }} post: <br>
+    {{ p.user.name }}: <br>
     <div class="w3-panel w3-light-grey w3-round-xlarge">
         {{ p.text }}<br><br>
         <a href="{% url 'post_like' p.id %}" class="w3-button"><i class="material-icons">thumb_up</i>
             {% if p.likes.all|length > 0 %}
-                <span class="w3-badge  w3-red">{{ p.likes.all|length }}</span>
+                <span class="w3-badge w3-red w3-small">{{ p.likes.all|length }}</span>
             {% endif %}
-        </a>
-        <a href="" class="w3-button"><i class="material-icons">thumb_down</i></a>
+        </a>        
         <a href="#" class="w3-button"><i class="material-icons">chat_bubble</i></a>
+        <a href="#" class="w3-button"><i class="material-icons">share</i></a>
     </div>
 {% endfor %}
 
