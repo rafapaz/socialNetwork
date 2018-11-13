@@ -21,8 +21,23 @@
                 <span class="w3-badge w3-red w3-small">{{ p.likes.all|length }}</span>
             {% endif %}
         </a>        
-        <a href="#" class="w3-button"><i class="material-icons">chat_bubble</i></a>
-        <a href="#" class="w3-button"><i class="material-icons">share</i></a>
+        <a href="javascript:accordion('comments-{{p.id}}')" class="w3-button"><i class="material-icons">chat_bubble</i>
+            {% if p.comments.all|length > 0 %}
+                <span class="w3-badge w3-red w3-small">{{ p.comments.all|length }}</span>
+            {% endif %}
+        </a>
+        <a href="#" class="w3-button"><i class="material-icons">share</i></a>  
+
+        <div id="comments-{{p.id}}" class="w3-container w3-hide">
+            <form action="{% url 'post_comment' p.id %}" method="POST">
+                {% csrf_token %}
+                <input type="text" name="comment">
+                <button class="w3-button w3-round-xlarge w3-green w3-small" type="submit">Comment</button>
+            </form>
+            {% for c in p.comments.all %}
+                {{c.user.name}}: {{c.text}} <br><br>
+            {% endfor %}
+        </div>
     </div>
 {% endfor %}
 
