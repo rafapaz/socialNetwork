@@ -67,3 +67,22 @@ def post_comment(request, post_id):
         com.save()
 
     return redirect('post_index')
+
+
+def post_share(request, post_id):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    post = get_object_or_404(Post, pk=post_id)
+    myUser = CustomUser.objects.get(user=request.user)
+
+    newPost = Post()
+    newPost.user = myUser
+    newPost.date_pub = datetime.datetime.now()
+    newPost.repost = True
+    newPost.original_user = post.user
+    newPost.text = post.text
+    newPost.image = post.image
+    newPost.save()
+
+    return redirect('post_index')

@@ -7,6 +7,8 @@ class Post(models.Model):
     date_pub = models.DateTimeField('publish date')
     text = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to=user_directory_path, blank=True, null=True)
+    repost = models.BooleanField(blank=True, null=True, default=False)
+    original_user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='reposts', blank=True, null=True)
 
     def __str__(self):
         return self.user.name + ' -> ' + self.text[:100] + '...'

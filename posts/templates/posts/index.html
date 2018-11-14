@@ -13,7 +13,11 @@
 </div>
 <br>
 {% for p in postsAll %}
-    {{ p.user.name }}: <br>
+    <a href="{% url 'profile' p.user.id %}">{{ p.user.name }}</a>
+    {% if p.repost %}
+        shared a post from <a href="{% url 'profile' p.original_user.id %}">{{p.original_user}}</a>
+    {% endif%}
+    : <br>
     <div class="w3-panel w3-light-grey w3-round-xlarge">
         {{ p.text }}<br><br>
         <a href="{% url 'post_like' p.id %}" class="w3-button"><i class="material-icons">thumb_up</i>
@@ -26,7 +30,7 @@
                 <span class="w3-badge w3-red w3-small">{{ p.comments.all|length }}</span>
             {% endif %}
         </a>
-        <a href="#" class="w3-button"><i class="material-icons">share</i></a>  
+        <a href="{% url 'post_share' p.id %}" class="w3-button"><i class="material-icons">share</i></a>  
 
         <div id="comments-{{p.id}}" class="w3-container w3-hide">
             <form action="{% url 'post_comment' p.id %}" method="POST">
