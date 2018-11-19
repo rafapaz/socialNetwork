@@ -4,9 +4,9 @@
 
 {% block content %}
     {% for u in usersList %}
-        <div class="w3-display-container  w3-panel w3-sand w3-mobile w3-center"  style="width:50%">
+        <div class="w3-display-container  w3-panel w3-sand w3-mobile w3-center">
             <span onclick="this.parentElement.style.display='none'"
-            class="w3-button w3-display-topright">X</span>
+            class="w3-button w3-display-topright w3-small">X</span>
             <form action="{% url 'requestFriend' %}" method="POST">
                 {% csrf_token %}
                 <input type="hidden" id="id" name="id" value="{{u.id}}">
