@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}List of Users{% endblock %}
+{% block title %}List of Friendship Requests{% endblock %}
 
 {% block content %}
     {% for req in myReqs %}
@@ -12,7 +12,7 @@
                 <input type="hidden" id="user_id" name="user_id" value="{{ req.user_from.id }}">
                 <input type="hidden" id="req_id" name="req_id" value="{{ req.id }}">
                 <input type="hidden" id="list" name="list" value="1">
-                <a class="w3-button w3-hover-none" href="{% url 'profile' u.id %}">
+                <a class="w3-button w3-hover-none" href="{% url 'profile' req.user_from.id %}">
                     <img  style="width:60px" class="w3-circle" src="{{ req.user_from.img_profile.url }}" /> {{ req.user_from.name }}
                 </a>
                 <button class="w3-button w3-round-xxlarge w3-green w3-mobile" type="submit">Accept friend</button>                
