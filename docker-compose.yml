@@ -1,0 +1,9 @@
+version: '3'
+
+services:  
+  web:
+    image: socialnetwork-img:latest
+    volumes:
+      - .:/app
+    ports:
+      - '8000:8000'
